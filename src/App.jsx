@@ -14,31 +14,60 @@ function App() {
   // State for the currently selected team member
   const [selectedMember, setSelectedMember] = useState(teamMembers[0]);
 
-  // Array to store markers so we can reset their color later
+  // State for storing markers
   const [markers, setMarkers] = useState([]);
+
+  // Create custom triangle icon for the markers
+  const createTriangleIcon = (color) => {
+    return L.divIcon({
+      className: "triangle-icon",
+      html: `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="0,0 20,0 10,20" fill="${color}" />
+              </svg>`,
+      iconSize: [30, 30],
+      iconAnchor: [10, 20],
+    });
+  };
 
   // Handle next and previous buttons
   const goToNext = () => {
     const nextIndex = teamMembers.indexOf(selectedMember) + 1;
     if (nextIndex < teamMembers.length) {
-      setSelectedMember(teamMembers[nextIndex]);
+      const nextMember = teamMembers[nextIndex];
+      setSelectedMember(nextMember);
+      updateMarker(nextMember);
     }
   };
 
   const goToPrev = () => {
     const prevIndex = teamMembers.indexOf(selectedMember) - 1;
     if (prevIndex >= 0) {
-      setSelectedMember(teamMembers[prevIndex]);
+      const prevMember = teamMembers[prevIndex];
+      setSelectedMember(prevMember);
+      updateMarker(prevMember);
     }
   };
 
+  // Update the marker color when the selected member changes
+  const updateMarker = (newSelectedMember) => {
+    // Reset the color of all markers
+    markers.forEach((marker) => {
+      marker.setIcon(createTriangleIcon("#F2547C"));
+    });
+
+    // Find and highlight the marker for the selected member
+    const markerIndex = teamMembers.indexOf(newSelectedMember);
+    if (markers[markerIndex]) {
+      markers[markerIndex].setIcon(createTriangleIcon("#30D5C8"));
+    }
+  };
+
+  // Initialize the map with Leaflet
   useEffect(() => {
-    // Initialize the map with Leaflet attribution disabled
     const map = L.map("map", {
       attributionControl: false, // Disable default Leaflet attribution
     }).setView([51.505, -0.09], 2); // Default world view
 
-    // Add the MapTiler Toner tile layer
     const Toner = L.tileLayer(
       "https://api.maptiler.com/maps/toner-v2/{z}/{x}/{y}.png?key=k9wvjSleDxq0bkfe2tsg",
       {
@@ -49,10 +78,9 @@ function App() {
     );
     Toner.addTo(map);
 
-    // Add custom MapTiler attribution
     L.control
       .attribution({
-        position: "bottomright", // Place attribution in the lower-right corner
+        position: "bottomright",
       })
       .addAttribution(
         `<a href="https://maptiler.com/" target="_blank" style="text-decoration: none;">
@@ -61,44 +89,30 @@ function App() {
       )
       .addTo(map);
 
-    // Define a function to create custom triangle icons
-    const createTriangleIcon = (color) => {
-      return L.divIcon({
-        className: "triangle-icon",
-        html: `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="0,0 20,0 10,20" fill="${color}" />
-              </svg>`,
-        iconSize: [30, 30], // Size of the icon
-        iconAnchor: [10, 20], // Anchor point for positioning
-      });
-    };
-
-    // Add markers for team members
+    // Create markers for team members
     const newMarkers = [];
     teamMembers.forEach((member) => {
       if (member.lat && member.lng) {
-        // Create a marker with a pink triangle icon
         const marker = L.marker([member.lat, member.lng], {
           icon: createTriangleIcon("#F2547C"),
           popupAnchor: [0, -20],
         }).addTo(map);
 
-        // Handle marker click event
-        marker.on("click", function () {
+        // Add the marker to the array
+        newMarkers.push(marker);
+
+        // Add click event to update the selected member
+        marker.on("click", () => {
           // Reset color of all markers
-          newMarkers.forEach((m) => {
-            m.setIcon(createTriangleIcon("#F2547C"));
-          });
+        newMarkers.forEach((m) => {
+          m.setIcon(createTriangleIcon("#F2547C"));
+        });
 
           // Set the clicked marker's color to turquoise
           marker.setIcon(createTriangleIcon("#30D5C8"));
-
-          // Update selected member state and trigger re-render
-          setSelectedMember(member); // Ensure selected member is updated
+          setSelectedMember(member); // Update the selected member
+          updateMarker(member); // Update the marker color
         });
-
-        // Store marker in array
-        newMarkers.push(marker);
       }
     });
 
