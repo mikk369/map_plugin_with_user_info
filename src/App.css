@@ -1,0 +1,164 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.main-container {
+  background-color: black; 
+  padding: 90px 0; 
+  display: flex; 
+  justify-content: center; 
+}
+
+.wrapper-container {
+  display: flex; 
+  width: 100%;
+  max-width: 1200px;
+}
+
+@media (max-width: 1300px) {
+  .wrapper-container {
+    flex-direction: column; 
+    align-items: center; 
+    flex-wrap: wrap;
+
+  }
+}
+
+.map-container {
+  height: 500px; 
+  width: 60%; 
+}
+
+/* //set heading to center\\ */
+.heading-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* ///SLIDER\\\ */
+.people-slider {
+  width: 40%; 
+  margin-left: 20px; 
+  background-color: #000; 
+  padding: 20px;
+  border-radius: 8px;
+}
+
+@media (max-width: 1100px) {
+  .people-slider .heading-wrapper h2 {
+    font-size: 2rem;
+
+  }
+}
+@media (max-width: 400px) {
+  .text .name,
+  .text .interest,
+  .text .career,
+  .text .location {
+    font-size: 10px; /* Adjust font size for all elements inside .text */
+  }
+}
+
+
+.slider-title {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+
+.slider-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* ///SLIDER IMAGE\\\ */
+.image {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+}
+
+.slider-image {
+  width: 245px;
+  height: 245px;
+  object-fit: cover;
+  border-radius: 8px;
+  position: relative;
+}
+
+@media (max-width: 400px) {
+  .slider-image {
+    width: 200px;
+    height: 200px;
+    
+  }
+}
+
+/* //SLIDER TEXT\\ */
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 9px;
+  line-height: 1.5rem;
+}
+
+.name,
+.career {
+  font-weight: bold;
+  color: #fff;
+}
+
+.interest,
+.location {
+  font-size: 14px;
+  color: #fff;
+}
+
+.location i {
+  margin-right: 5px;
+}
+
+/* //BUTTONS\\ */
+.slider-btn-prev, .slider-btn-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(48, 213, 200, 0.6);
+  color: #000;
+  border: none;
+  padding: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  z-index: 10;
+}
+
+.slider-btn-prev {
+  left: -25px;
+}
+
+.slider-btn-next {
+  right: -25px; 
+}
+
+.slider-btn-prev:hover, .slider-btn-next:hover {
+  background-color: #2bc9bc;
+}
+
+/* .leaflet-control-attribution {
+  display: none !important;
+} */
