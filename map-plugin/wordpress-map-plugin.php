@@ -45,7 +45,7 @@ function map_plugin_enqueue_scripts() {
                 // Enqueue the React app JS if it exists
                 if ($js_file) {
                     wp_enqueue_script(
-                        'custom-calendar-main-js',
+                        'custom-map-plugin-js',
                         plugin_dir_url(__FILE__) . 'dist/' . $js_file, // Dynamically get JS file path
                         array(), // No dependencies
                         null, // No version (the file name includes the hash)
@@ -57,7 +57,7 @@ function map_plugin_enqueue_scripts() {
                 $css_files = $manifest['index.html']['css'] ?? [];
                 foreach ($css_files as $css_file) {
                     wp_enqueue_style(
-                        'custom-calendar-main-css-' . md5($css_file), // Unique handle for each CSS file
+                        'custom-map-plugin-css-' . md5($css_file), // Unique handle for each CSS file
                         plugin_dir_url(__FILE__) . 'dist/' . $css_file, // Dynamically get CSS file path
                         array(), // No dependencies
                         null // No version (the file name includes the hash)
@@ -70,7 +70,7 @@ function map_plugin_enqueue_scripts() {
     }
 }
 
-add_action('wp_enqueue_scripts', 'custom_calendar_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'map_plugin_enqueue_scripts');
 
 function custom_map_plugin() {
     return '<div id="map_plugin_root"></div>';
