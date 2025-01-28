@@ -3,12 +3,28 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 function App() {
-  // State for team members' data
+
+function imageDirectory (i) {
+  // Change this depending if uplaoded to wordpress or using in local environment
+  const isWordPress = false;
+
+   // If it's WordPress, use the plugin directory, otherwise use the local path
+   const pluginUrl = isWordPress ? '/wp-content/plugins/map_plugin/dist' : '';
+
+  // Dynamically create the image filename based on the index
+  const imageName = `avatar${i + 1}.jpg`;
+
+   // Define the image path
+   const imagePath = isWordPress ? `${pluginUrl}/images/${imageName}` : `/images/${imageName}`;
+
+   return imagePath;
+}
+   // State for team members' data
   const [teamMembers, setTeamMembers] = useState([
-    { name: "John Doe", interest: "Area of Interest1", career:"Cybersecurity", address: "New York, USA", lat: 40.7128, lng: -74.0060, image: "/images/avatar.jpg"},
-    { name: "Jane Smith", interest: "Area of Interest2", career:"Biology", address: "London, UK", lat: 51.5074, lng: -0.1278, image: "/images/avatar2.jpg" },
-    { name: "Maria Garcia", interest: "Area of Interest3", career:"Climate Security", address: "Madrid, Spain", lat: 40.4168, lng: -3.7038, image: "/images/avatar3.jpg" },
-    { name: "Mikk", interest: "Area of Interest3", career:"Intelligence", address: "Viljandi, Estonia", lat: 58.3639, lng: 25.5900, image: "/images/avatar6.jpg" },
+    { name: "John Doe", interest: "Area of Interest1", career:"Cybersecurity", address: "New York, USA", lat: 40.7128, lng: -74.0060, image: imageDirectory(0)},
+    { name: "Jane Smith", interest: "Area of Interest2", career:"Biology", address: "London, UK", lat: 51.5074, lng: -0.1278, image: imageDirectory(1)},
+    { name: "Maria Garcia", interest: "Area of Interest3", career:"Climate Security", address: "Madrid, Spain", lat: 40.4168, lng: -3.7038, image: imageDirectory(2)},
+    { name: "Mikk", interest: "Area of Interest3", career:"Intelligence", address: "Viljandi, Estonia", lat: 58.3639, lng: 25.5900, image: imageDirectory(3)},
   ]);
 
   // State for the currently selected team member
@@ -137,7 +153,7 @@ function App() {
             <div className="slider-wrap">
               <div className="data-slider">
                 <div className="image">
-                  <img className="slider-image" src={selectedMember.image} alt="slider-image" loading="lazy" />
+                  <img className="slider-image" src={selectedMember.image} alt={`${selectedMember.name}'s avatar`} loading="lazy" />
                   <button onClick={goToPrev} disabled={teamMembers.indexOf(selectedMember) === 0} className="slider-btn-prev">
                     <i className="fa-solid fa-arrow-left"></i>
                   </button>
